@@ -1,59 +1,124 @@
-# Video Game Data Pipeline
+# Video Game Data Pipeline and Analytics Dashboard
 
-A data pipeline for collecting, processing, and analyzing video game data from Metacritic and Steam platforms. This project uses Dagster for orchestration and provides a comprehensive dataset of video game information including reviews, ratings, and metadata.
+## Project Overview
+This project implements an end-to-end data pipeline for collecting, processing, and analyzing video game data from Metacritic and Steam. The pipeline uses Dagster for orchestration and includes a React-based analytics dashboard for data visualization.
 
 ## Project Structure
-
 ```
 video_game_pipeline/
-├── data/               # Data storage
-│   ├── raw/           # Raw scraped data
-│   └── final/         # Processed and merged datasets
-├── processors/         # Data processing modules
-├── scrapers/          # Web scraping modules
-├── dagster_pipeline/  # Dagster pipeline definitions
-├── requirements.txt   # Python dependencies
-└── workspace.yaml     # Dagster workspace configuration
+├── data/                      # Data storage directory
+│   └── final/                # Processed data files
+├── dagster_pipeline/         # Dagster pipeline configuration
+├── processors/               # Data processing modules
+│   ├── data_cleaner.py      # Data cleaning operations
+│   └── data_merger.py       # Data merging operations
+├── scrapers/                 # Web scraping modules
+│   ├── metacritic_scraper.py # Metacritic data scraper
+│   └── steam_scraper.py      # Steam data scraper
+├── App.js                    # React dashboard application
+├── requirements.txt          # Python dependencies
+└── workspace.yaml           # Dagster workspace configuration
 ```
 
-## Features
+## Components
 
-- Web scraping of video game data from Metacritic and Steam
-- Data processing and cleaning
-- Intelligent matching of games across platforms
-- Combined scoring system
-- Dagster-based pipeline orchestration
+### 1. Web Scraping
+The project includes two web scrapers:
 
-## Prerequisites
+#### Metacritic Scraper
+- Extracts game information from Metacritic including:
+  - Game title
+  - Metascore
+  - Platform
+  - Release date
+  - Developer
+  - Publisher
+  - Genres
 
+#### Steam Scraper
+- Extracts game information from Steam including:
+  - Game title
+  - Price
+  - Discount
+  - Review summary
+  - Review count
+  - Release date
+  - Developer
+  - Publisher
+  - Tags
+
+### 2. Data Processing
+The data processing pipeline includes:
+
+#### Data Cleaning
+- Standardizes game titles
+- Normalizes dates
+- Handles missing values
+- Removes duplicates
+- Validates data types
+
+#### Data Merging
+- Matches games between Metacritic and Steam
+- Calculates match confidence scores
+- Combines complementary data
+- Generates unified dataset
+
+### 3. Dagster Pipeline
+The Dagster pipeline orchestrates the entire process:
+
+- Schedules regular data collection
+- Executes data quality checks
+- Manages data processing steps
+- Saves results to CSV
+
+### 4. Analytics Dashboard
+A React-based dashboard visualizes the collected data:
+
+#### Features
+- Overview statistics
+- Genre distribution
+- Price analysis
+- Review score trends
+- Developer/publisher insights
+
+[SCREENSHOT_PLACEHOLDER_1: Dashboard Overview]
+[SCREENSHOT_PLACEHOLDER_2: Genre Distribution Chart]
+[SCREENSHOT_PLACEHOLDER_3: Price Analysis Graph]
+[SCREENSHOT_PLACEHOLDER_4: Review Score Trends]
+
+## Setup and Installation
+
+### Prerequisites
 - Python 3.8+
-- pip (Python package manager)
-- Git
+- Node.js 14+
+- npm or yarn
 
-## Installation
+### Installation Steps
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone [repository-url]
 cd video_game_pipeline
 ```
 
-2. Create and activate a virtual environment:
+2. Set up Python environment:
 ```bash
 python -m venv venv
-# On Windows
-.\venv\Scripts\activate
-# On Unix/MacOS
-source venv/bin/activate
-```
-
-3. Install dependencies:
-```bash
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+3. Install frontend dependencies:
+```bash
+npm install
+```
+
+4. Configure environment variables:
+Create a `.env` file with necessary API keys and configuration.
+
 ## Usage
 
+### Running the Pipeline
 1. Start the Dagster UI:
 ```bash
 dagster dev
@@ -61,43 +126,63 @@ dagster dev
 
 2. Access the Dagster UI at `http://localhost:3000`
 
-3. Run the pipeline:
-   - Navigate to the "Launchpad" in the Dagster UI
-   - Select the pipeline you want to run
-   - Configure any necessary parameters
-   - Click "Launch Run"
+3. Trigger the pipeline manually or wait for scheduled execution
 
-## Data Processing
+### Running the Dashboard
+1. Start the React development server:
+```bash
+npm start
+```
 
-The pipeline performs the following steps:
+2. Access the dashboard at `http://localhost:3000`
 
-1. **Data Collection**
-   - Scrapes game data from Metacritic
-   - Scrapes game data from Steam
-   - Stores raw data in CSV format
+## Data Quality Checks
+The pipeline includes several data quality checks:
+- Title matching confidence threshold
+- Required field validation
+- Date format verification
+- Price range validation
 
-2. **Data Processing**
-   - Cleans and standardizes game titles
-   - Matches games across platforms
-   - Calculates combined scores
-   - Generates final dataset
+## Scheduling
+The pipeline is configured to run:
+- Daily at midnight
+- Manual trigger option available
+- Configurable through Dagster UI
 
-## Output
+## Challenges and Solutions
 
-The final dataset includes:
-- Game titles
-- Developer information
-- Metacritic scores
-- Steam review scores
-- Combined weighted scores
-- Platform availability
-- Release dates
-- URLs for both platforms
+### Challenges
+1. Rate Limiting
+   - Implemented delays between requests
+   - Respects robots.txt rules
+
+2. Data Matching
+   - Developed fuzzy matching algorithm
+   - Confidence scoring system
+
+3. Data Consistency
+   - Standardized data formats
+   - Comprehensive cleaning pipeline
+
+### Solutions
+- Implemented request throttling
+- Created robust error handling
+- Developed data validation checks
+
+## Future Improvements
+1. Additional data sources
+2. Enhanced matching algorithms
+3. Real-time data updates
+4. Advanced analytics features
+5. User authentication system
 
 ## Contributing
-
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Submit a pull request
+
+## License
+[Specify License]
+
+## Contact
+[Your Contact Information]
